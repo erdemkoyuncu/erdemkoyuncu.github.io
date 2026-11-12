@@ -1,0 +1,73 @@
+Alp Merhaba,
+
+Revizyon genel olarak iyi olmuş eline sağlık. Ufak tefek birkaç notum var. Bunları hesaba katıp yükleyebilirsin...
+
+Saygılarımla,
+Erdem
+
+========================================  
+
+Sanırım her respose için 5000 karakter limiti var. Responseları hazırlarken aklında bulunsun diye söylüyorum. İki response koyabiliyor musun emin değilim - belki koyabiliyorsundur...
+
+========================================  
+
+Her reviewer için şuna benzer bir paragrafla açmanı öneriyorum:
+
+We thank the reviewers for their constructive feedback. We have substantially revised the manuscript in response to their comments. Approximately one quarter of the revised manuscript text, including the appendices and excluding references, is new or revised and highlighted in blue.
+
+"one quarter" lafini bold yapabilirsin. Onemli olan ne kadar ek is yaptigini gostermek. Adamlar makaleyi tekrar okumayabilir bile. Bu paragrafı bütün reviewerlara koyarsın.
+
+Yer olursa The revision adds two new theoretical results, which help explain the fundamental benefits of RUMOR, as well as extended numerical verifications gibi bir şeyler de yazılabilir.
+
+========================================  
+
+İkinci sayfadaki contributions paragrafını yeni yaptığımız şeyleri hesaba katarak güncelleştirmemiz lazım.
+
+========================================  
+
+AH3P'nin ilk commentini biraz sallamışız. Adam diyor ki NO HISTORY her durumda loss açısından daha iyi çalışıyor ama sizin uyrdurduğunuz metrikle daha kötü çalışıyormuş gibi görünüyor, ne ayaksınız? Sen de ama şu şu durumlarda öyle olmuyor diyorsun. Bu adamın söylediği durumu yok etmiyor. Şöyle bir şey reponse öneriyorum:
+
+We thank the reviewer for identifying this distinction. We agree that, on GPT-2 medium at \(\beta=2\), NO HISTORY achieves lower losses for both participation groups and a lower uniform node-average loss than RUMOR. Its lower average loss therefore represents better performance on the stated optimization objective in this setting. Its worse gap-reduction score arises because the high-participation group improves more than the low-participation group, increasing the difference between their losses.
+
+Our use of a disparity measure follows established performance-fairness criteria in federated learning. Ditto (Li et al., ICML 2021) defines fairness through the standard deviation of client test losses. Similarly, q-FFL (Li et al., ICLR 2020) evaluates the uniformity of performance across devices, while GIFAIR-FL (Yue et al.) explicitly penalizes differences between group-average losses. For two equally weighted group losses, their variance equals one quarter of their squared difference. These works motivate the underlying disparity criterion; our normalized score expresses gap reduction relative to the uncorrected and full-participation references.
+
+This criterion is relevant to decentralized multilingual fine-tuning because improvements in average performance may be distributed unevenly across participation groups. When model usefulness influences willingness to contribute, persistent disparities can reinforce the underrepresentation of less frequently participating groups. The gap helps track this distributional aspect of training alongside average performance.
+
+Nevertheless, we agree that disparity reduction alone is insufficient to establish a preferable outcome. Hu et al. (SaTML 2024), in “Fair Federated Learning via Bounded Group Loss,” also discuss how equalizing group losses can sacrifice predictive utility. The NO HISTORY comparison illustrates why disparity and absolute performance must be examined together.
+
+To address this, we have revised the evaluation discussion and figure captions to identify the headline score explicitly as a measure of group-disparity reduction. We now present uniform node-average loss and the absolute losses of both participation groups alongside this metric. We also report seed-to-seed variability and paired uncertainty estimates for the comparisons highlighted by the reviewer. These revisions make clear when a smaller gap accompanies improved losses and when the criteria favor different methods. 
+
+Son paragrafta dediğimiz şeyleri yapmamız lazım, tabii metriği motive etmek ve referansları eklemek dışında, yani:
+
+** Table 10: İlgili mutlak kayıpları, özellikle GPT-2 medium \(\beta=2\) için RUMOR ve NO HISTORY sonuçlarını, seed’ler üzerinden ortalama ± standart sapma olarak verelim.
+** Table 11: Eksik GPT-2 medium karşılaştırmasını ekleyelim. Her eşleştirilmiş seed için RUMOR − NO HISTORY farkını hesaplayıp ortalama fark ± standart hata raporla. Bunu uniform ortalama ve iki grubun kayıpları için ayrı ayrı yapalım. Hakem özellikle paired uncertainty istediği için yalnızca yöntemlerin ayrı standart sapmalarını vermek yeterli değil.
+** Ana metin ve şekil açıklamaları: Gap sıralamasının gruplar arasındaki farkın azalmasını ölçtüğünü açıkça belirtelim. NO HISTORY’nin bu örnekte her iki grupta ve ortalamada daha iyi olduğunu doğrudan söyleyelim.
+** Kaynaklar: Ditto’nun Definition 2’sini, q-FFL’in fairness tanımını, GIFAIR-FL’in Eq. (1)’ini ve SaTML çalışmasının ilgili tartışmasını ekleyelim.
+
+========================================  
+
+Yine bu metrik muhabbeti ile ilgili olarak: Makalenin ana değerlendirme metriği konusunda karışıklık kalmaması gerekiyor. Orijinal sunuma uygun olarak **group-gap reduction’ı ana değerlendirme metriğimiz olarak koruyalım**. Bununla birlikte, ortalama kayıp ve her grubun mutlak kaybının da sonuçları değerlendirmek için önemli olduğunu açıkça söyleyelim. Bu seçimin literatür ve uygulama gerekçesini yukarıdaki maddede belirttiğim ve hazırlayacağımız yanıtta zaten kısmen vereceğiz; aynı açıklamayı makaleye de taşıyalım.
+
+Şu yerlerde netleştirelim:
+
+- **Section 3:** Uniform ortalama kaybın eğitimde hedeflenen amaç fonksiyonu olduğunu koruyalım. Bunun, deneylerde öne çıkardığımız gap metriğiyle farklı şeyler ölçtüğünü belirtelim.
+- **Section 6, metriklerin tanımlandığı bölüm:** Ana metriğimizin gap reduction olduğunu, neden bunu kullandığımızı ve full-participation referansının rolünü açıklayalım. Aynı paragrafta, bu metriğin tek başına yeterli olmadığını ve mevcut ortalama/grup kayıplarını da birlikte değerlendirdiğimizi söyleyelim.
+- **Abstract, sonuç yorumları ve şekil açıklamaları:** Gap bakımından üstünlüğü genel olarak “daha iyi model performansı” şeklinde ifade etmeyelim. Hangi metriğe göre iyileşme olduğunu açıkça yazalım. NO HISTORY gibi metriklerin farklı yöntemleri tercih ettiği örnekleri de doğrudan açıklayalım.
+- **Rebuttal:** Yukarıdaki açıklamayla diğer yanıtları tutarlı hale getirelim. Özellikle güçlü baseline karşılaştırmalarında gap, ortalama kayıp ve stabilite sonuçlarını birbirinin yerine kullanmayalım.
+
+Böylece ana metriğimizi gerekçesiyle korumuş oluruz; diğer kayıpları da yalnızca olumlu sonuç verdiğimiz yerlerde başvurduğumuz ölçütler gibi sunmamış oluruz.
+
+=====================================
+
+Cached RUMOR deneyleri çok iyi olmuş ve hakemlerin birçok yorumunu doğrudan karşılıyor. Ancak bu sonuçları görünce “Cached RUMOR bu kadar iyi çalışıyorsa orijinal RUMOR’un ek iletişim maliyeti bize ne kazandırıyor?” sorusu akla gelebilir. Hakemler cached sürümü henüz görmedikleri için bunu sormamışlar, ama yeni sonuçlarla birlikte sorabilirler.
+
+Dolayısıyla zaman varsa cached RUMOR, orijinal RUMOR ve klasik yöntemleri aynı toplam iletişim bütçesi altında karşılaştıralım. Böylece güncel komşu bilgisi için yapılan ek iletişimin karşılığını ve hangi koşullarda hangi sürümün tercih edilmesi gerektiğini daha net gösterebiliriz.
+
+========================================  
+
+AH3P response 2'ye istinaden: Bu adam aslında ablation soruyor. Aslında sen şunu demişsin: "These results demonstrate benefits from loss adaptation and disagreement at equal communicationbudgets." Burada biraz daha ablation hissini vermek lazim. Mesea şöyle: "To directly address your request for a setting where the complete method improves over both simpler alternatives, we compare cached RUMOR with two component ablations on Qwen2.5-7B at (\beta=6), under the same communication budget. The fixed-cap variant retains disagreement but removes loss-dependent cap adaptation. The no-disagreement variant retains the identical adaptive-cap rule but removes the neighbor-disagreement correction."
+
+
+
+
+
